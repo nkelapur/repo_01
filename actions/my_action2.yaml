@@ -1,0 +1,21 @@
+---
+description: Gets a valye of loopback n ip from a router.
+pack: my_pack1
+enabled: true
+entry_point: my_action2.sh
+name: my_action2
+
+parameters:
+ 
+    router:
+        type: "string"
+        description: "Address router to query"
+        required: true
+        position: 0
+    loopback:
+        type: "string"
+        description: "loopback interface to query"
+        required: true
+        position: 1
+
+runner_type: "local-shell-script"

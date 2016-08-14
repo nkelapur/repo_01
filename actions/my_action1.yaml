@@ -1,0 +1,8 @@
+---
+description: Gets a valye of loopback 1 ip from a router.
+pack: my_pack1
+enabled: true
+entry_point: my_action1.sh
+name: my_action1
+parameters: {}
+runner_type: "local-shell-script"

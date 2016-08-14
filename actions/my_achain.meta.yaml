@@ -1,0 +1,22 @@
+---
+# Action definition metadata
+name: "my_achain1"
+description: "Action Chain workflow for router config"
+pack: my_pack1
+
+# `runner_type` has value `action-chain` to identify that action is an ActionChain.
+runner_type: "action-chain"
+
+# `entry_point` path to the ActionChain definition file, relative to the pack's action directory.
+entry_point: "chains/my_achain1.yaml"
+
+enabled: true
+parameters:
+  skip_notify:
+    default:
+      - ping_router
+notify:
+  on-complete:
+    message: "\"@channel: router Config succeeded.\""
+    routes:
+      - "slack"

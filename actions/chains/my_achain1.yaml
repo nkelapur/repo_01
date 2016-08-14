@@ -1,0 +1,49 @@
+---
+    chain:
+        -
+            name: "ping_router"
+            ref: "core.local"
+            parameters:
+                cmd: "ping 10.24.2.10 -c 4"
+            on-success: "create_loopback"
+            on-failure: "fail_exit"
+        -
+            name: "create_loopback"
+            ref: "core.local"
+            parameters:
+                cmd: "echo Goint to create loopback"
+            on-success: "create_loopback2"
+            on-failure: "fail_exit"
+        -
+            name: "create_loopback2"
+            ref: "core.local"
+            parameters:
+                cmd: "curl -v -X POST -u admin:password http://10.24.2.10/rest/config/running/interface  -d \"<Loopback><id>4</id></Loopback>\" "
+            on-success: "set_lb_ip"
+            on-failure: "fail_exit"
+        -
+            name: "set_lb_ip"
+            ref: "core.local"
+            parameters:
+                cmd: "curl -v -X PATCH -u admin:password http://10.24.2.10/rest/config/running/interface/Loopback/4/ip/address  -d \"<ip><address>9.9.9.4/32</address></ip>\" "
+            on-success: "set_admin_up"
+            on-failure: "fail_exit"
+        -
+            name: "set_admin_up"
+            ref: "core.local"
+            parameters:
+                cmd: "curl -v -X DELETE -u admin:password http://10.24.2.10/rest/config/running/interface/Loopback/4/shutdown "
+            on-success: "success_exit"
+            on-failure: "fail_exit"
+        -
+            name: "success_exit"
+            ref: "core.local"
+            parameters:
+                cmd: "echo Fusion 9 loopback 4 created successfully !!!"
+            on-failure: "fail_exit"
+        -
+            name: "fail_exit"
+            ref: "core.local"
+            parameters:
+                cmd: "echo fail router config"
+    default: "ping_router"
